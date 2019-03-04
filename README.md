@@ -1,4 +1,4 @@
-#Waves Maps on the map
+## Waves Nodes on the map
 
 This project puts all known Waves Nodes to the map and shows their geo information.
 
