@@ -110,11 +110,11 @@
             }, ms);
             promise.then(resolve, reject)
         });
-    }
+    };
 
     const getNodePeers = async (address) => {
         const regex = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/gm;
-        return fetchTimeout(5000, fetch(`http://${address}/peers/connected`))
+        return fetchTimeout(5000, fetch(`${address}/peers/connected`))
             .then(res => res.json())
             .then(nodePeers => {
                 $('#loading-message').text(`Loading data from ${address}: ${nodePeers.peers.length} nodes...`);
@@ -140,7 +140,7 @@
             }
         });
         return initialList;
-    }
+    };
 
     const getGeoIps = (peers) => {
         const peerKeys = Object.keys(peers);
@@ -149,11 +149,11 @@
         const $loadingMessageWrapper = $('#loading-message')
         const updateCounter = (doneCount) => {
             $loadingMessageWrapper.text(`Loading location data: ${doneCount}/${peerCount}`);
-            if (doneCount == peerCount - 1) {
+            if (doneCount === peerCount - 1) {
                 $loadingMessageWrapper.hide();
             }
+        };
 
-        }
         return new Promise((resolve, reject) => {
             peerKeys.forEach((peerKey, index) => {
                 setTimeout(() => {
@@ -179,7 +179,7 @@
         });
     };
 
-    getNodePeers('nodes.wavesplatform.com')
+    getNodePeers('https://nodes.wavesplatform.com')
         .then(initialPeers => {
             const initialPeersArray = Object.keys(initialPeers).reduce((accumulator, key) => {
                 accumulator.push(initialPeers[key].plainIp);
@@ -190,12 +190,12 @@
 
             const peers = initialPeersArray.map(peer => {
                 return new Promise((resolve) => {
-                    getNodePeers(peer)
+                    getNodePeers(`http://${peer}`)
                         .then(result => {
                             resolve({status: true, data: result});
                         })
                         .catch(err => {
-                            getNodePeers(peer + ':6869')
+                            getNodePeers(`http://${peer}:6869`)
                                 .then(result => {
                                     resolve({status: true, data: result});
                                 })
