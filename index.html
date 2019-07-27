@@ -116,7 +116,7 @@
 
     const getNodePeers = async (address) => {
         const regex = /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/gm;
-        blacklistedNodes.forEach((ip) => {
+        blacklistedNodes.forEach(ip => {
             if (address.indexOf(ip) !== -1) return Promise.reject(`Node is blacklisted ${ip}`);
         });
         return fetchTimeout(5000, fetch(`${address}/peers/connected`))
